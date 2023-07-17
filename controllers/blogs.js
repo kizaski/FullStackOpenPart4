@@ -7,7 +7,7 @@ blogsRouter.get( '/', ( request, response ) =>
         .find( {} )
         .then( blogs =>
         {
-            response.json( blogs )
+            response.status( 200 ).json( blogs )
         } )
 } )
 
