@@ -95,11 +95,8 @@ test( '400 Bad Request on missing data', async () =>
     .expect( 400 )
 } )
 
-
 test( 'a blog can be deleted', async () =>
 {
-  const initialResponse = await api.get( '/api/blogs' )
-
   const newBlog = {
     title: "Title",
     author: "author",
@@ -115,6 +112,29 @@ test( 'a blog can be deleted', async () =>
     .delete( `/api/blogs/${ newBlogResponse.body.id }` )
 
   expect( deleteBlog.status ).toBe( 204 )
+} )
+
+test( 'a blog can be updated', async () =>
+{
+  const newBlog = {
+    title: "Title",
+    author: "author",
+    url: "https://www.example.com/",
+    likes: 1
+  }
+
+  let resp = await api
+    .post( '/api/blogs' )
+    .send( newBlog )
+
+  newBlog.likes = 10
+
+  await api
+    .put( `/api/blogs/${ resp.body.id }` )
+    .send( newBlog )
+
+  const newResp = await api.get( `/api/blogs/${ resp.body.id }` )
+  expect( newResp.body.likes ).toBe( newBlog.likes )
 } )
 
 
