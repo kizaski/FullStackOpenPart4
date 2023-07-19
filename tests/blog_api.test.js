@@ -17,7 +17,12 @@ beforeEach( async () =>
   }
 } )
 
+
+
 // describe('when there is initially some notes saved', () => {  } )
+
+
+
 
 test( 'blogs are returned as json', async () =>
 {
@@ -88,6 +93,28 @@ test( '400 Bad Request on missing data', async () =>
     .post( '/api/blogs' )
     .send( newBlog )
     .expect( 400 )
+} )
+
+
+test( 'a blog can be deleted', async () =>
+{
+  const initialResponse = await api.get( '/api/blogs' )
+
+  const newBlog = {
+    title: "Title",
+    author: "author",
+    url: "https://www.example.com/",
+    likes: 1
+  }
+
+  let newBlogResponse = await api
+    .post( '/api/blogs' )
+    .send( newBlog )
+
+  const deleteBlog = await api
+    .delete( `/api/blogs/${ newBlogResponse.body.id }` )
+
+  expect( deleteBlog.status ).toBe( 204 )
 } )
 
 

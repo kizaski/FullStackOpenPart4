@@ -17,7 +17,7 @@ blogsRouter.post( '/', async ( request, response ) =>
     }
 
     if ( typeof blog.title === 'undefined' || blog.title === null ||
-         typeof blog.url === 'undefined' || blog.url === null )
+        typeof blog.url === 'undefined' || blog.url === null )
     {
         response.status( 400 ).end()
     } else
@@ -25,6 +25,22 @@ blogsRouter.post( '/', async ( request, response ) =>
         const result = await blog.save()
         response.status( 201 ).json( result.toJSON() )
     }
+} )
+
+blogsRouter.delete( '/:id', async ( request, response ) =>
+{
+    await Blog.findById( request.params.id )
+    await Blog.findByIdAndRemove( request.params.id )
+    response.status( 204 ).end()
+} )
+
+blogsRouter.put( '/:id', async ( request, response ) =>
+{
+    const blog = {
+        likes: request.body.likes
+    }
+    const result = await Blog.findByIdAndUpdate( request.params.id, blog, { new: true } )
+    response.status( 200 ).json( result.toJSON() )
 } )
 
 module.exports = blogsRouter
