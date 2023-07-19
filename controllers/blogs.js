@@ -1,5 +1,6 @@
 const blogsRouter = require( 'express' ).Router()
 const Blog = require( '../models/blog' )
+const User = require('../models/user')
 
 blogsRouter.get( '/', async ( request, response ) =>
 {
@@ -9,6 +10,8 @@ blogsRouter.get( '/', async ( request, response ) =>
 
 blogsRouter.post( '/', async ( request, response ) =>
 {
+    // const user = await User.findById(request.body.userId)
+
     const blog = new Blog( request.body )
 
     if ( !blog.likes )
