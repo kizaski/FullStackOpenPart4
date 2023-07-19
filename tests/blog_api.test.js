@@ -17,6 +17,8 @@ beforeEach( async () =>
   }
 } )
 
+// describe('when there is initially some notes saved', () => {  } )
+
 test( 'blogs are returned as json', async () =>
 {
   await api
