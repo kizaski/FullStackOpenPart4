@@ -31,6 +31,64 @@ test( 'correct amount of blogs is returned', async () =>
   expect( response.body ).toHaveLength( helper.initialBlogs.length )
 } )
 
+test( 'identifying field named id', async () =>
+{
+  const response = await api.get( '/api/blogs' )
+  expect( response.body[ 0 ].id ).toBeDefined()
+} )
+
+test( 'a valid blog can be added ', async () =>
+{
+  const initialResponse = await api.get( '/api/blogs' )
+
+  const newBlog = {
+    title: "Title",
+    author: "author",
+    url: "https://www.example.com/",
+    likes: 1
+  }
+
+  await api
+    .post( '/api/blogs' )
+    .send( newBlog )
+
+  const response = await api.get( '/api/blogs' )
+  expect( response.body ).toHaveLength( initialResponse.body.length + 1 )
+  expect( response.body[ response.body.length - 1 ].title ).toBeDefined()
+  expect( response.body[ response.body.length - 1 ].url ).toBeDefined()
+} )
+
+test( 'likes default to 0', async () =>
+{
+  const newBlog = {
+    title: "Title",
+    author: "author",
+    url: "https://www.example.com/"
+  }
+
+  await api
+    .post( '/api/blogs' )
+    .send( newBlog )
+
+  const response = await api.get( '/api/blogs' )
+  expect( response.body[ response.body.length - 1 ] ).toHaveProperty( 'title', newBlog.title )
+  expect( response.body[ response.body.length - 1 ] ).toHaveProperty( 'likes', 0 )
+} )
+
+test( '400 Bad Request on missing data', async () =>
+{
+  const newBlog = {
+    random: 'object',
+    that: 'doesnt have the right properties'
+  }
+
+  await api
+    .post( '/api/blogs' )
+    .send( newBlog )
+    .expect( 400 )
+} )
+
+
 afterAll( async () =>
 {
   await mongoose.connection.close()
