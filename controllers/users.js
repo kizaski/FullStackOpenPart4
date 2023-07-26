@@ -4,11 +4,14 @@ const User = require( '../models/user' )
 
 usersRouter.get( '/', async ( request, response ) =>
 {
-  const users = await User
+  let users = await User
     .find( {} )
-    .populate( 'blogs' )
-  
-  response.json( users )
+    .populate( {
+      path: 'blogs',
+    }
+    ) //<--------- !!!!!!!!!!
+
+  response.status( 200 ).json( users )
 } )
 
 usersRouter.post( '/', async ( request, response ) =>
