@@ -40,6 +40,10 @@ describe( 'when there is initially some blogs saved', () =>
     expect( response.body[ 0 ].id ).toBeDefined()
   } )
 
+} )
+
+describe( 'addition or change of a blog', () =>
+{
   test( 'a valid blog can be added ', async () =>
   {
     const initialResponse = await api.get( '/api/blogs' )
@@ -91,25 +95,6 @@ describe( 'when there is initially some blogs saved', () =>
       .expect( 400 )
   } )
 
-  test( 'a blog can be deleted', async () =>
-  {
-    const newBlog = {
-      title: "Title",
-      author: "author",
-      url: "https://www.example.com/",
-      likes: 1
-    }
-
-    let newBlogResponse = await api
-      .post( '/api/blogs' )
-      .send( newBlog )
-
-    const deleteBlog = await api
-      .delete( `/api/blogs/${ newBlogResponse.body.id }` )
-
-    expect( deleteBlog.status ).toBe( 204 )
-  } )
-
   test( 'a blog can be updated', async () =>
   {
     const newBlog = {
@@ -133,6 +118,28 @@ describe( 'when there is initially some blogs saved', () =>
     expect( newResp.body.likes ).toBe( newBlog.likes )
   } )
 
+} )
+
+describe( 'deletion of a blog', () =>
+{
+  test( 'a blog can be deleted', async () =>
+  {
+    const newBlog = {
+      title: "Title",
+      author: "author",
+      url: "https://www.example.com/",
+      likes: 1
+    }
+
+    let newBlogResponse = await api
+      .post( '/api/blogs' )
+      .send( newBlog )
+
+    const deleteBlog = await api
+      .delete( `/api/blogs/${ newBlogResponse.body.id }` )
+
+    expect( deleteBlog.status ).toBe( 204 )
+  } )
 } )
 
 afterAll( async () =>
