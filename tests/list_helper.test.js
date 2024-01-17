@@ -1,4 +1,4 @@
-const { totalLikes, favoriteBlog } = require( '../utils/list_helper' )
+const { totalLikes, favoriteBlog, mostBlogs } = require( '../utils/list_helper' )
 
 describe( 'total likes', () =>
 {
@@ -17,54 +17,90 @@ describe( 'total likes', () =>
         expect( result ).toBe( 36 )
     } )
 
-    const listWithOneBlog = [
-        {
-            _id: '5a422aa71b54a676234d17f8',
-            title: 'Go To Statement Considered Harmful',
-            author: 'Edsger W. Dijkstra',
-            url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-            likes: 5,
-            __v: 0
-        }
-    ]
-
     test( 'when list has only one blog, equals the likes of that', () =>
     {
+        const listWithOneBlog = [
+            {
+                _id: '5a422aa71b54a676234d17f8',
+                title: 'Go To Statement Considered Harmful',
+                author: 'Edsger W. Dijkstra',
+                url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+                likes: 5,
+                __v: 0
+            }
+        ]
+
         const result = totalLikes( listWithOneBlog )
         expect( result ).toBe( 5 )
     } )
 
 } )
 
-describe('favorite blog', () => {
-  test('returns the favorite blog when there is one', () => {
-    const blogs = [
-      { title: "Blog 1", author: "Author 1", likes: 10 },
-      { title: "Blog 2", author: "Author 2", likes: 15 },
-      { title: "Blog 3", author: "Author 3", likes: 12 }
-    ]
+describe( 'favorite blog', () =>
+{
+    test( 'returns the favorite blog when there is one', () =>
+    {
+        const blogs = [
+            { title: "Blog 1", author: "Author 1", likes: 10 },
+            { title: "Blog 2", author: "Author 2", likes: 15 },
+            { title: "Blog 3", author: "Author 3", likes: 12 }
+        ]
 
-    const result = favoriteBlog(blogs)
+        const result = favoriteBlog( blogs )
 
-    expect(result).toEqual({ title: "Blog 2", author: "Author 2", likes: 15 })
-  })
+        expect( result ).toEqual( { title: "Blog 2", author: "Author 2", likes: 15 } )
+    } )
 
-  test('returns "No blogs available" when the list is empty', () => {
-    const blogs = []
+    test( 'returns "No blogs available" when the list is empty', () =>
+    {
+        const blogs = []
 
-    const result = favoriteBlog(blogs)
+        const result = favoriteBlog( blogs )
 
-    expect(result).toBe("No blogs available")
-  })
+        expect( result ).toBe( "No blogs available" )
+    } )
 
-  test('returns the only blog when there is only one blog', () => {
-    const blogs = [
-      { title: "Solo Blog", author: "Solo Author", likes: 20 }
-    ]
+    test( 'returns the only blog when there is only one blog', () =>
+    {
+        const blogs = [
+            { title: "Solo Blog", author: "Solo Author", likes: 20 }
+        ]
 
-    const result = favoriteBlog(blogs)
+        const result = favoriteBlog( blogs )
 
-    expect(result).toEqual({ title: "Solo Blog", author: "Solo Author", likes: 20 })
-  })
+        expect( result ).toEqual( { title: "Solo Blog", author: "Solo Author", likes: 20 } )
+    } )
 
-})
+} )
+
+describe( 'author with most blogs', () =>
+{
+    test( 'returns the author with the most blogs and the number of blogs', () =>
+    {
+        const blogs = [
+            { title: "Blog 1", author: "Author 1" },
+            { title: "Blog 2", author: "Author 2" },
+            { title: "Blog 3", author: "Author 1" },
+            { title: "Blog 4", author: "Author 3" },
+            { title: "Blog 5", author: "Author 2" },
+            { title: "Blog 6", author: "Author 2" }
+        ]
+
+        const result = mostBlogs( blogs )
+
+        expect( result ).toEqual( {
+            author: "Author 2",
+            blogs: 3
+        } )
+    } )
+
+    test( 'handles an empty array of blogs', () =>
+    {
+        const blogs = []
+
+        const result = mostBlogs( blogs )
+
+        expect( result ).toBe( "No blogs available" )
+    } )
+
+} )
