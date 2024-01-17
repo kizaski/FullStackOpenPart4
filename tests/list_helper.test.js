@@ -1,4 +1,4 @@
-const listHelper = require( '../utils/list_helper' )
+const { totalLikes, favoriteBlog } = require( '../utils/list_helper' )
 
 describe( 'total likes', () =>
 {
@@ -13,7 +13,7 @@ describe( 'total likes', () =>
             { _id: "5a422bc61b54a676234d17fc", title: "Type wars", author: "Robert C. Martin", url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html", likes: 2, __v: 0 }
         ]
 
-        const result = listHelper.totalLikes( blogs )
+        const result = totalLikes( blogs )
         expect( result ).toBe( 36 )
     } )
 
@@ -30,8 +30,41 @@ describe( 'total likes', () =>
 
     test( 'when list has only one blog, equals the likes of that', () =>
     {
-        const result = listHelper.totalLikes( listWithOneBlog )
+        const result = totalLikes( listWithOneBlog )
         expect( result ).toBe( 5 )
     } )
 
 } )
+
+describe('favorite blog', () => {
+  test('returns the favorite blog when there is one', () => {
+    const blogs = [
+      { title: "Blog 1", author: "Author 1", likes: 10 },
+      { title: "Blog 2", author: "Author 2", likes: 15 },
+      { title: "Blog 3", author: "Author 3", likes: 12 }
+    ]
+
+    const result = favoriteBlog(blogs)
+
+    expect(result).toEqual({ title: "Blog 2", author: "Author 2", likes: 15 })
+  })
+
+  test('returns "No blogs available" when the list is empty', () => {
+    const blogs = []
+
+    const result = favoriteBlog(blogs)
+
+    expect(result).toBe("No blogs available")
+  })
+
+  test('returns the only blog when there is only one blog', () => {
+    const blogs = [
+      { title: "Solo Blog", author: "Solo Author", likes: 20 }
+    ]
+
+    const result = favoriteBlog(blogs)
+
+    expect(result).toEqual({ title: "Solo Blog", author: "Solo Author", likes: 20 })
+  })
+
+})
