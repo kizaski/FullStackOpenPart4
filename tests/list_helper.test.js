@@ -1,4 +1,5 @@
-const { totalLikes, favoriteBlog, mostBlogs } = require( '../utils/list_helper' )
+const { totalLikes, favoriteBlog, mostBlogs, mostLikes } = require( '../utils/list_helper' )
+const _ = require( 'lodash' )
 
 describe( 'total likes', () =>
 {
@@ -79,9 +80,9 @@ describe( 'author with most blogs', () =>
     {
         const blogs = [
             { title: "Blog 1", author: "Author 1" },
-            { title: "Blog 2", author: "Author 2" },
             { title: "Blog 3", author: "Author 1" },
             { title: "Blog 4", author: "Author 3" },
+            { title: "Blog 2", author: "Author 2" },
             { title: "Blog 5", author: "Author 2" },
             { title: "Blog 6", author: "Author 2" }
         ]
@@ -99,6 +100,41 @@ describe( 'author with most blogs', () =>
         const blogs = []
 
         const result = mostBlogs( blogs )
+
+        expect( result ).toBe( "No blogs available" )
+    } )
+
+} )
+
+describe( 'author with most likes', () =>
+{
+    test( 'returns the author with the most likes and the total number of likes', () =>
+    {
+        const blogs = [
+            { title: "Blog 1", author: "Author 1", likes: 10 },
+            { title: "Blog 3", author: "Author 1", likes: 5 },
+            { title: "Blog 4", author: "Author 3", likes: 8 },
+            { title: "Blog 2", author: "Author 2", likes: 15 },
+            { title: "Blog 5", author: "Author 2", likes: 12 },
+            { title: "Blog 6", author: "Author 2", likes: 7 }
+        ]
+
+        const result = mostLikes( blogs )
+
+        const expectedAuthor = "Author 2"
+        const expectedLikes = 34
+
+        expect( result ).toEqual( {
+            author: expectedAuthor,
+            likes: expectedLikes
+        } )
+    } )
+
+    test( 'handles an empty array of blogs', () =>
+    {
+        const blogs = []
+
+        const result = mostLikes( blogs )
 
         expect( result ).toBe( "No blogs available" )
     } )
