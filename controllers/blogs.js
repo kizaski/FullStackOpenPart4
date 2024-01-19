@@ -28,8 +28,17 @@ blogsRouter.post( '/', async ( request, response ) =>
     // //   return response.status(401).json({ error: 'token invalid' })
     // // }
     // const user = await User.findById(decodedToken.id)
+    const body = request.body
 
-    const blog = new Blog( request.body )
+    const user = await User.findById(body.userId)
+
+    const blog = new Blog( {
+        title: body.title,
+        author: body.author,
+        url: body.url,
+        likes: body.likes,
+        user: user.id
+    } )
 
     if ( !blog.likes )
     {
@@ -42,8 +51,11 @@ blogsRouter.post( '/', async ( request, response ) =>
         response.status( 400 ).end()
     } else
     {
-        const result = await blog.save()
-        response.status( 201 ).json( result.toJSON() )
+        const savedBlog = await blog.save()
+        user.blogs = user.blogs.concat(savedBlog._id)
+        await user.save()
+
+        response.status( 201 ).json( savedBlog.toJSON() )
     }
 } )
 

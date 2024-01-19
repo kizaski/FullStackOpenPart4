@@ -9,7 +9,7 @@ usersRouter.get( '/', async ( request, response ) =>
     .populate( {
       path: 'blogs',
     }
-    ) //<--------- !!!!!!!!!!
+    )
 
   response.status( 200 ).json( users )
 } )
