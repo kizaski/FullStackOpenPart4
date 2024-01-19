@@ -44,7 +44,7 @@ describe( 'when there is initially some blogs saved', () =>
 
 describe( 'addition or change of a blog', () =>
 {
-  test( 'a valid blog can be added ', async () =>
+  test( 'a valid blog can be added ', async () => // Fails. Add auth
   {
     const initialResponse = await api.get( '/api/blogs' )
 
@@ -65,7 +65,7 @@ describe( 'addition or change of a blog', () =>
     expect( response.body[ response.body.length - 1 ].url ).toBeDefined()
   } )
 
-  test( 'likes default to 0', async () =>
+  test( 'likes default to 0', async () => // Fails. Add auth
   {
     const newBlog = {
       title: "Title",
@@ -82,7 +82,7 @@ describe( 'addition or change of a blog', () =>
     expect( response.body[ response.body.length - 1 ] ).toHaveProperty( 'likes', 0 )
   } )
 
-  test( '400 Bad Request on missing data', async () =>
+  test( '400 Bad Request on missing data', async () => // Fails. Expect either 400 or 401
   {
     const newBlog = {
       random: 'object',
@@ -95,7 +95,7 @@ describe( 'addition or change of a blog', () =>
       .expect( 400 )
   } )
 
-  test( 'a blog can be updated', async () =>
+  test( 'a blog can be updated', async () => // Fails.
   {
     const newBlog = {
       title: "Title",
@@ -122,7 +122,7 @@ describe( 'addition or change of a blog', () =>
 
 describe( 'deletion of a blog', () =>
 {
-  test( 'a blog can be deleted', async () =>
+  test( 'a blog can be deleted', async () => // Fails. Add auth
   {
     const newBlog = {
       title: "Title",

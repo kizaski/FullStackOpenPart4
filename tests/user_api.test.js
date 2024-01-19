@@ -2,11 +2,9 @@ const bcrypt = require( 'bcrypt' )
 const User = require( '../models/user' )
 const helper = require( './test_helper' )
 
-//...
-
 describe( 'when there is initially one user in db', () =>
 {
-  beforeEach( async () =>
+  beforeEach( async () => //thrown: "Exceeded timeout of 5000 ms for a hook. Move out of describe?
   {
     await User.deleteMany( {} )
 
@@ -16,7 +14,7 @@ describe( 'when there is initially one user in db', () =>
     await user.save()
   } )
 
-  test( 'creation succeeds with a fresh username', async () =>
+  test( 'creation succeeds with a fresh username', async () => //fails
   {
     const usersAtStart = await helper.usersInDb()
 
@@ -39,7 +37,7 @@ describe( 'when there is initially one user in db', () =>
     expect( usernames ).toContain( newUser.username )
   } )
 
-  test('creation fails with proper statuscode and message if username already taken', async () => {
+  test('creation fails with proper statuscode and message if username already taken', async () => { //fails
     const usersAtStart = await helper.usersInDb()
 
     const newUser = {
