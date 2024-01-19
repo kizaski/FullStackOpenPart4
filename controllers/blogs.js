@@ -66,8 +66,6 @@ blogsRouter.delete( '/:id', middleware.userExtractor, async ( request, response 
 
 blogsRouter.put( '/:id', async ( request, response ) =>
 {
-    // auth
-
     const blog = {
         likes: request.body.likes
     }
