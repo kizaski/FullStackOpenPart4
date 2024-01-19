@@ -1,18 +1,23 @@
 const bcrypt = require( 'bcrypt' )
 const User = require( '../models/user' )
 const helper = require( './test_helper' )
+const supertest = require( 'supertest' )
+const app = require( '../app' )
+
+const api = supertest( app )
+
+beforeEach( async () => //thrown: "Exceeded timeout of 5000 ms for a hook. Move out of describe?
+{
+  await User.deleteMany( {} )
+
+  const passwordHash = await bcrypt.hash( 'sekret', 10 )
+  const user = new User( { username: 'root', passwordHash } )
+
+  await user.save()
+} )
 
 describe( 'when there is initially one user in db', () =>
 {
-  beforeEach( async () => //thrown: "Exceeded timeout of 5000 ms for a hook. Move out of describe?
-  {
-    await User.deleteMany( {} )
-
-    const passwordHash = await bcrypt.hash( 'sekret', 10 )
-    const user = new User( { username: 'root', passwordHash } )
-
-    await user.save()
-  } )
 
   test( 'creation succeeds with a fresh username', async () => //fails
   {
