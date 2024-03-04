@@ -42,6 +42,9 @@ describe( 'when there is initially some blogs saved', () =>
 
 } )
 
+// TODO fix blog_api tests
+// look at insomnia api requests
+
 describe( 'addition or change of a blog', () =>
 {
   test( 'a valid blog can be added ', async () => // Fails. Add auth
